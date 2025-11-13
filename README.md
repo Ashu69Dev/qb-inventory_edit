@@ -1,4 +1,4 @@
-# qb-inventory
+# qb-inventory_Redesign By [Lee]
 
 ## Dependencies
 - [qb-core](https://github.com/qbcore-framework/qb-core)
@@ -15,10 +15,6 @@
 https://docs.qbcore.org/qbcore-documentation/qbcore-resources/qb-inventory
 
 ## Preview
-https://cdn.discordapp.com/attachments/1437343089130995785/1437343169409712128/2025-11-10_12-54-20.mp4?ex=6916da24&is=691588a4&hm=ea654e59c95ea7b1fba62d6e84f888dda62bee6882cdd679a08171a41282861c&
-
-
-
 https://github.com/user-attachments/assets/fdf9d7fa-7adb-4882-983d-02d29a0dad3a
 
 
