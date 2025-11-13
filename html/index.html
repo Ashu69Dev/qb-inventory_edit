@@ -19,16 +19,29 @@
             <div class="inventory-container" v-if="isInventoryOpen" @mousemove="drag" @mouseup="endDrag" @mousedown="containerMouseDownAction">
                 <div class="inventory-section player-inventory-section" :class="{ 'centered-inventory-section': shouldCenterInventory }">
                     <div class="inventory-header">
-                        <div class="labels-container">
-                            <div class="inventory-label">
-                                <p>{{ inventoryLabel }}</p>
+                        <div class="header-top-row">
+                            <div class="player-info">
+                                <div class="player-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="player-name">{{ playerName }}</div>
                             </div>
-                            <div class="current-weight">
-                                <p>{{ (playerWeight / 1000).toFixed(1) }} / {{ (maxWeight / 1000).toFixed(1) }}</p>
+                            <div class="inventory-title">
+                                <i class="fas fa-backpack"></i> INVENTORY
+                            </div>
+                            <div class="weight-info">
+                                <i class="fas fa-weight-hanging weight-icon"></i>
+                                <span>{{ (playerWeight / 1000).toFixed(1) }} / {{ (maxWeight / 1000).toFixed(1) }} kg</span>
                             </div>
                         </div>
-                        <div class="weight-bar">
-                            <div class="weight-bar-fill" :style="{ width: Math.min((playerWeight / maxWeight) * 100, 100) + '%' }" :class="weightBarClass"></div>
+                        <div class="header-bottom-row">
+                            <div class="weight-label">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Capacity:</span>
+                            </div>
+                            <div class="weight-bar">
+                                <div class="weight-bar-fill" :style="{ width: Math.min((playerWeight / maxWeight) * 100, 100) + '%' }" :class="weightBarClass"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="inventory-grid">
@@ -41,7 +54,7 @@
                                     <img :src="'images/' + getItemInSlot(slot, 'player').image" alt="" />
                                 </div>
                                 <div class="item-slot-amount" v-if="getItemInSlot(slot, 'player')">
-                                    <p>x{{ getItemInSlot(slot, 'player').amount }}</p>
+                                    <p><i class="fas fa-layer-group"></i> {{ getItemInSlot(slot, 'player').amount }}</p>
                                 </div>
                                 <div class="item-slot-durability" v-if="getItemInSlot(slot, 'player')">
                                     <div
@@ -56,9 +69,6 @@
                                     ></div>
                                     <div class="item-slot-durability-fill" v-else style="width: 0%"></div>
                                 </div>
-                                <!-- <div class="item-slot-label" v-if="getItemInSlot(slot, 'player')">
-                                    <p>{{ getItemInSlot(slot, 'player').label }}</p>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -66,6 +76,7 @@
 
                 <div class="input-container" v-if="!isOtherInventoryEmpty">
                     <div class="input-wrapper">
+                        <i class="fas fa-arrows-alt-h input-icon"></i>
                         <input type="number" v-model="transferAmount" min="1" :placeholder="transferAmount === null ? 'amount' : ''" />
                         <button @click="clearTransferAmount" class="clear-button">
                             <i class="fas fa-times"></i>
@@ -76,16 +87,29 @@
                 <!-- Other Inventory Section -->
                 <div class="inventory-section other-inventory-section" v-if="!isOtherInventoryEmpty">
                     <div class="inventory-header">
-                        <div class="labels-container">
-                            <div class="inventory-label">
-                                <p>{{ otherInventoryLabel }}</p>
+                        <div class="header-top-row">
+                            <div class="player-info">
+                                <div class="player-icon">
+                                    <i class="fas fa-box-archive"></i>
+                                </div>
+                                <div class="player-name">{{ otherInventoryLabel }}</div>
                             </div>
-                            <div class="current-weight">
-                                <p>{{ (otherInventoryWeight / 1000).toFixed(1) }} / {{(otherInventoryMaxWeight / 1000).toFixed(1) }}</p>
+                            <div class="inventory-title">
+                                <i class="fas fa-warehouse"></i> STORAGE
+                            </div>
+                            <div class="weight-info">
+                                <i class="fas fa-weight-hanging weight-icon"></i>
+                                <span>{{ (otherInventoryWeight / 1000).toFixed(1) }} / {{(otherInventoryMaxWeight / 1000).toFixed(1) }} kg</span>
                             </div>
                         </div>
-                        <div class="weight-bar">
-                            <div class="weight-bar-fill" :style="{ width: Math.min((otherInventoryWeight / otherInventoryMaxWeight) * 100, 100) + '%' }" :class="otherWeightBarClass"></div>
+                        <div class="header-bottom-row">
+                            <div class="weight-label">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Capacity:</span>
+                            </div>
+                            <div class="weight-bar">
+                                <div class="weight-bar-fill" :style="{ width: Math.min((otherInventoryWeight / otherInventoryMaxWeight) * 100, 100) + '%' }" :class="otherWeightBarClass"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="inventory-grid">
@@ -95,10 +119,10 @@
                                     <img :src="'images/' + getItemInSlot(slot, 'other').image" alt="" />
                                 </div>
                                 <div class="item-slot-amount" v-if="getItemInSlot(slot, 'other')">
-                                    <p>x{{ getItemInSlot(slot, 'other').amount }}</p>
+                                    <p><i class="fas fa-layer-group"></i> {{ getItemInSlot(slot, 'other').amount }}</p>
                                 </div>
                                 <div v-if="isShopInventory && getItemInSlot(slot, 'other')" class="item-price">
-                                    <p>${{ getItemInSlot(slot, 'other').price }}</p>
+                                    <p><i class="fas fa-tag"></i> ${{ getItemInSlot(slot, 'other').price }}</p>
                                 </div>
                                 <div class="item-slot-durability" v-if="getItemInSlot(slot, 'other')">
                                     <div
@@ -113,14 +137,13 @@
                                     ></div>
                                     <div class="item-slot-durability-fill" v-else style="width: 0%"></div>
                                 </div>
-                                <!-- <div class="item-slot-label" v-if="getItemInSlot(slot, 'other')">
-                                    <p>{{ getItemInSlot(slot, 'other').label }}</p>
-                                </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Hotbar -->
             <div class="hotbar-container" v-if="showHotbar">
                 <div class="hotbar">
                     <div v-for="slot in 5" :key="slot" class="item-slot">
@@ -131,7 +154,7 @@
                             <img :src="'images/' + getHotbarItemInSlot(slot).image" alt="" />
                         </div>
                         <div class="item-slot-amount" v-if="getHotbarItemInSlot(slot)">
-                            <p>x{{ getHotbarItemInSlot(slot).amount }}</p>
+                            <p><i class="fas fa-layer-group"></i> {{ getHotbarItemInSlot(slot).amount }}</p>
                         </div>
                         <div class="item-slot-durability" v-if="getHotbarItemInSlot(slot)">
                             <div
@@ -152,22 +175,27 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Notification -->
             <div class="notification-container" v-if="showNotification">
                 <div class="notification-slot">
                     <div class="notification-title">
+                        <i class="fas fa-bell"></i>
                         <p>{{ notificationType }}</p>
                     </div>
                     <div class="item-slot-img">
                         <img :src="notificationImage" alt="" />
                     </div>
                     <div class="item-slot-amount">
-                        <p>x{{ notificationAmount }}</p>
+                        <p><i class="fas fa-layer-group"></i> {{ notificationAmount }}</p>
                     </div>
                     <div class="item-slot-label">
                         <p>{{ notificationText }}</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Required Items -->
             <div class="required-item-container" v-if="showRequiredItems">
                 <div class="required-item">
                     <div v-for="(item, index) in requiredItems" :key="index" class="item-slot">
@@ -180,44 +208,50 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Weapon Attachments -->
             <div class="weapon-attachments" v-if="showWeaponAttachments">
                 <img class="weapon" :src="'images/' + selectedWeapon.image" alt="" />
                 <div class="attachment-slot" v-for="(attachment, i) in selectedWeaponAttachments" :key="i" @click="removeAttachment(attachment)">
                     <img :src="'images/' + attachment.attachment + '.png'" alt="" />
                 </div>
             </div>
+
+            <!-- Dragged Item -->
             <div v-if="draggedItem" class="item-slot" :class="{ 'dragged-item': draggedItem }" :style="{ top: dragY + 'px', left: dragX + 'px' }">
                 <div class="item-slot-img">
                     <img :src="'images/' + draggedItem.image" alt="" />
                 </div>
                 <div class="item-slot-amount">
-                    <p>x{{ draggedItem.amount }}</p>
+                    <p><i class="fas fa-layer-group"></i> {{ draggedItem.amount }}</p>
                 </div>
                 <div class="item-slot-label">
                     <p>{{ draggedItem.label }}</p>
                 </div>
             </div>
+
+            <!-- Context Menu with Icons -->
             <ul v-if="showContextMenu" class="context-menu" :style="{ top: contextMenuPosition.top, left: contextMenuPosition.left }">
-                <li v-if="contextMenuItem.useable" @click="useItem(contextMenuItem)">Use</li>
+                <li v-if="contextMenuItem.useable" @click="useItem(contextMenuItem)"><i class="fas fa-play"></i> Use</li>
                 <li @mouseover="showSubmenu = true" @mouseleave="showSubmenu = false">
-                    Give
+                    <i class="fas fa-share"></i> Give
                     <ul v-if="showSubmenu" class="submenu">
-                        <li @click="giveItem(contextMenuItem, 1)">Single</li>
-                        <li @click="giveItem(contextMenuItem, 'half')">Half</li>
-                        <li @click="giveItem(contextMenuItem, 'all')">All</li>
+                        <li @click="giveItem(contextMenuItem, 1)"><i class="fas fa-1"></i> Single</li>
+                        <li @click="giveItem(contextMenuItem, 'half')"><i class="fas fa-divide"></i> Half</li>
+                        <li @click="giveItem(contextMenuItem, 'all')"><i class="fas fa-infinity"></i> All</li>
                     </ul>
                 </li>
                 <li @mouseover="showSubmenu = true" @mouseleave="showSubmenu = false">
-                    Drop
+                    <i class="fas fa-trash"></i> Drop
                     <ul v-if="showSubmenu" class="submenu">
-                        <li @click="dropItem(contextMenuItem, 1)">Single</li>
-                        <li @click="dropItem(contextMenuItem, 'half')">Half</li>
-                        <li @click="dropItem(contextMenuItem, 'all')">All</li>
+                        <li @click="dropItem(contextMenuItem, 1)"><i class="fas fa-1"></i> Single</li>
+                        <li @click="dropItem(contextMenuItem, 'half')"><i class="fas fa-divide"></i> Half</li>
+                        <li @click="dropItem(contextMenuItem, 'all')"><i class="fas fa-infinity"></i> All</li>
                     </ul>
                 </li>
-                <li @click="splitAndPlaceItem(contextMenuItem, 'player')">Split</li>
-                <li v-if="contextMenuItem.name.includes('weapon_')" @click="copySerial(contextMenuItem)">Copy Serial</li>
-                <li v-if="contextMenuItem.name.includes('weapon_')" @click="openWeaponAttachments(contextMenuItem)">Attachments</li>
+                <li @click="splitAndPlaceItem(contextMenuItem, 'player')"><i class="fas fa-cut"></i> Split</li>
+                <li v-if="contextMenuItem.name.includes('weapon_')" @click="copySerial(contextMenuItem)"><i class="fas fa-copy"></i> Copy Serial</li>
+                <li v-if="contextMenuItem.name.includes('weapon_')" @click="openWeaponAttachments(contextMenuItem)"><i class="fas fa-puzzle-piece"></i> Attachments</li>
             </ul>
         </div>
     </body>
