@@ -56,6 +56,8 @@ const InventoryContainer = Vue.createApp({
                 // Config Options
                 maxWeight: 0,
                 totalSlots: 0,
+                // Player Data
+                playerName: "Player",
                 // Escape Key
                 isInventoryOpen: false,
                 // Single pane
@@ -116,6 +118,11 @@ const InventoryContainer = Vue.createApp({
             this.totalSlots = data.slots;
             this.playerInventory = {};
             this.otherInventory = {};
+            
+            // Set player name if provided
+            if (data.playerName) {
+                this.playerName = data.playerName;
+            }
 
             if (data.inventory) {
                 if (Array.isArray(data.inventory)) {
