@@ -169,12 +169,20 @@ end)
 
 RegisterNetEvent('qb-inventory:client:openInventory', function(items, other)
     SetNuiFocus(true, true)
+    
+    -- Get player name from PlayerData
+    local playerName = "Player"
+    if PlayerData and PlayerData.charinfo then
+        playerName = PlayerData.charinfo.firstname .. " " .. PlayerData.charinfo.lastname
+    end
+    
     SendNUIMessage({
         action = 'open',
         inventory = items,
         slots = Config.MaxSlots,
         maxweight = Config.MaxWeight,
-        other = other
+        other = other,
+        playerName = playerName  -- Add player name to NUI data
     })
 end)
 
